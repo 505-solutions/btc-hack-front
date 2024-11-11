@@ -10,6 +10,7 @@ import { showNotification } from '@mantine/notifications';
 
 
 import { deployVerifier, deployStrategy } from '@/contractInteractions/contractInteractions';
+import { useStrategy } from '@/contractInteractions/strategy';
 import { useState } from 'react';
 
 
@@ -70,7 +71,12 @@ export function MainComponent() {
             </Tabs.Panel>
 
             <Tabs.Panel value="settings">
-                Settings tab content
+                <Button onClick={
+                    async () => {
+                        const signer = await primaryWallet?.connector.ethers?.getSigner();
+                        await useStrategy(signer);
+                    }
+                }>Use strategy</Button>
             </Tabs.Panel>
             </Tabs>
 

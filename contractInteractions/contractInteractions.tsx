@@ -60,7 +60,10 @@ export const deployStrategy = async (signer: any, verifierAddress: string) => {
       swapRouter,
       verifierAddress, // "0xF26585263D5C18750870314e7Cf16fE2ED3c0A90",
       scalers,
-      minAdditions
+      minAdditions,
+      {
+        gasLimit: ethers.utils.hexlify(10000000),
+      }
     );
 
     await contract.deployed();
