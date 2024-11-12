@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import os
 from deployer.main import deploy_contract
+from zk_model import compile_model, get_proof
 
 app = Flask(__name__)
 
@@ -45,6 +46,10 @@ def deploy_verifier():
     }
     
     return jsonify(response)
+
+@app.route('/get_proof', methods=['POST'])
+def get_proof():
+    return get_proof()
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,4 +1,4 @@
-import { Button, Center, Code, Card, Text } from '@mantine/core';
+import { Button, Center, Code, Card, Text, JsonInput } from '@mantine/core';
 // import { Prism } from '@mantine/prism';
 import { Tabs, rem } from '@mantine/core';
 import { IconBoxModel, IconChartArrows, IconLoadBalancer, IconBrandGoogle, IconShield, IconMap } from '@tabler/icons-react';
@@ -21,7 +21,12 @@ export function MainComponent() {
     const [ verifierAddress, setVerifierAddress ] = useState("0xDfD349eC493C6afC77F859d00c8f03B36f9842b9");
     const [ strategyAddress, setStrategyAddress ] = useState("0x2e293Bd3Bc02e83D3ef7794C4F64E4F1D1729Fb6");
 
-    const codeLSTM = `# Define the LSTM model
+    const codeLSTM = `features = df[["liquidity", "sqrtPrice", "token0Price", "token1Price", "feeGrowthGlobal0X128",
+               "feeGrowthGlobal1X128", "volumeToken0", "volumeToken1", "volumeUSD", "txCount"]]
+targets = df[['feesUSD', 'high', 'low']]
+...
+
+# Define the LSTM model
 class LSTMModel(nn.Module):
     def __init__(self, input_size, hidden_layer_size, output_size):
         super(LSTMModel, self).__init__()
@@ -42,7 +47,7 @@ class LSTMModel(nn.Module):
         <Center>
             <DynamicWidget />
         </Center>
-        <Center>
+        <Center mt={20}>
         <Tabs defaultValue="gallery" style={{width: "80%"}}>
             <Tabs.List style={{width: "100%", margin: 'auto', justifyContent: 'center'}}>
                 <Tabs.Tab value="gallery" leftSection={<IconBoxModel style={iconStyle} />} style={{fontSize: '20px'}}>
@@ -52,7 +57,7 @@ class LSTMModel(nn.Module):
                 Liquidity providing strategy
                 </Tabs.Tab>
                 <Tabs.Tab value="settings" leftSection={<IconLoadBalancer style={iconStyle} />} style={{fontSize: '20px'}}>
-                Rebalancing with inference
+                AI agent rebalancing
                 </Tabs.Tab>
             </Tabs.List>
 
@@ -90,7 +95,7 @@ class LSTMModel(nn.Module):
                             Halo2 verifier contract
                         </Text>
                         <Text size="sm">
-                            Halo2 verifier contract that verifies that the resulting inference belongs to the given model. It was obtained by compiling LSTM model into ZK circuit.s  
+                            Halo2 verifier contract that verifies that the resulting inference belongs to the given model. It was obtained by compiling LSTM model into ZK circuits.
                         </Text>
                         <Button component="a" href={`https://explorer.testnet.citrea.xyz/address/${verifierAddress}`} mt={20} target="_blank" rel="noopener noreferrer" style={{width: 'min-content', margin: 'auto'}}>
                             View on Citrea Explorer
@@ -140,12 +145,23 @@ class LSTMModel(nn.Module):
             <Tabs.Panel value="settings">
                 <p>Let's use the predictions of the private LSTM model. Firstly we <b>prove</b> that the predictions are valid outputs of LSTM model using <b>halo2 verifier</b>. Seconly we submit the predictions to the agent that utilizes them in its rebalancing strategy.</p>
                 
-                <Button onClick={
+                <p>We send input values for <i>liquidity</i>, <i>sqrtPrice</i>, <i>token0Price</i>, <i>token1Price</i>, <i>feeGrowthGlobal0X128</i>,
+                <i>feeGrowthGlobal1X128</i>, <i>volumeToken0</i>, <i>volumeToken1</i>, <i>volumeUSD</i>, <i>txCount</i> for the current time point (for simplicity, values are normalized between 0 and 1).</p>
+
+                {/* [0.3187, 0.2779, 0.5818, 0.2362, 0.9929, 0.9940, 0.4910, 0.3536, 0.4910, 0.5165] */}
+                <JsonInput label='Input' mt='sm' placeholder='Input in JSON format' />
+
+                <p>We use and prove models predictions in <b>strategy smart contract</b>.</p>
+
+                <Button mb={50} onClick={
                     async () => {
                         const signer = await primaryWallet?.connector.ethers?.getSigner();
                         await useStrategy(signer);
                     }
-                }>Use strategy</Button>
+                }>
+                    Use strategy
+                    <IconLoadBalancer style={{marginLeft: '8px'}}/>
+                </Button>
             </Tabs.Panel>
             </Tabs>
 
