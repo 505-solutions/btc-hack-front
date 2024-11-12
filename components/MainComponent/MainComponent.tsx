@@ -19,7 +19,7 @@ export function MainComponent() {
     const iconStyle = { width: rem(24), height: rem(24) };
     const { primaryWallet } = useDynamicContext();
     const [ verifierAddress, setVerifierAddress ] = useState("0xDfD349eC493C6afC77F859d00c8f03B36f9842b9");
-    const [ strategyAddress, setStrategyAddress ] = useState("0x2e293Bd3Bc02e83D3ef7794C4F64E4F1D1729Fb6");
+    const [ strategyAddress, setStrategyAddress ] = useState("0xeFe71B7aC468C23fC3cD10C5E3cA7EEaBCef85c0");
 
     const codeLSTM = `features = df[["liquidity", "sqrtPrice", "token0Price", "token1Price", "feeGrowthGlobal0X128",
                "feeGrowthGlobal1X128", "volumeToken0", "volumeToken1", "volumeUSD", "txCount"]]

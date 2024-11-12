@@ -3,7 +3,7 @@ const { ethers } = require("ethers");
 
 export const useStrategy = async (signer: any) => {
     try {
-        const STRATEGY_ADDRESS = '0x2e293Bd3Bc02e83D3ef7794C4F64E4F1D1729Fb6'
+        const STRATEGY_ADDRESS = '0xeFe71B7aC468C23fC3cD10C5E3cA7EEaBCef85c0'
         const USDC = '0x977F4b2081478999e1295a4b9fD9C14dfa279ECd'
         const WETH_ADDR = '0xD000c22719930511aCc1cd6482F5A5b944E1Ec01'
         
